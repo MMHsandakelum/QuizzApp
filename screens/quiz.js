@@ -1,38 +1,44 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Quiz = () => {
   return (
-    <View style={styles.container}>
-      <View style={styles.questions}>
-        <Text style={styles.question}>This is a cool question ?</Text>
+    <LinearGradient
+      colors={["#242951", "#2C315E"]}
+      style={styles.linearGradient}
+    >
+      <View style={styles.container}>
+        <View style={styles.questions}>
+          <Text style={styles.question}>This is a cool question ?</Text>
+        </View>
+        <View style={styles.answers}>
+          <TouchableOpacity style={styles.answer}>
+            <Text style={styles.answerText}>Answer 01</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.answer}>
+            <Text style={styles.answerText}>Answer 02</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.answer}>
+            <Text style={styles.answerText}>Answer 03</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.answer}>
+            <Text style={styles.answerText}>Answer 04</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.buttons}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>SKIP</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>NEXT</Text>
+          </TouchableOpacity>
+          {/* <TouchableOpacity>
+            <Text>END</Text>
+          </TouchableOpacity> */}
+        </View>
       </View>
-      <View style={styles.answers}>
-        <TouchableOpacity style={styles.answer}>
-          <Text style={styles.answerText}>Answer 01</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.answer}>
-          <Text style={styles.answerText}>Answer 02</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.answer}>
-          <Text style={styles.answerText}>Answer 03</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.answer}>
-          <Text style={styles.answerText}>Answer 04</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>SKIP</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>NEXT</Text>
-        </TouchableOpacity>
-        {/* <TouchableOpacity>
-          <Text>END</Text>
-        </TouchableOpacity> */}
-      </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -45,10 +51,12 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   questions: {
-    marginVertical: 16,
+    alignItems: "center",
+    marginVertical: 30,
   },
   question: {
-    fontSize: 20,
+    color: "white",
+    fontSize: 26,
     fontWeight: "350",
   },
   answers: {
@@ -58,7 +66,7 @@ const styles = StyleSheet.create({
   answer: {
     padding: 10,
     width: "100%",
-    backgroundColor: "#DB4568",
+    backgroundColor: "#BE6AE5",
     marginTop: 10,
     borderRadius: 15,
   },
@@ -74,7 +82,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    backgroundColor: "#5450A4",
+    backgroundColor: "#3E9FFF",
     padding: 16,
     paddingLeft: 30,
     paddingRight: 30,
@@ -87,5 +95,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 14,
     fontWeight: "600",
+  },
+  linearGradient: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 5,
   },
 });
