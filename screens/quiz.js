@@ -1,44 +1,67 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  TouchableOpacityBase,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 
-const Quiz = () => {
+const Quiz = ({ navigation }) => {
+  const [questions, setQuestions] = useState();
+  const [ques, setQues] = useState(0);
+  const getQuiz = async () => {
+    const url =
+      "https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple";
+    const res = await fetch(url);
+    const data = await res.json();
+    console.log(data.results[0]);
+    setQuestions(data.results);
+  };
+  useEffect(() => {
+    getQuiz();
+  }, []);
   return (
-    <LinearGradient
-      colors={["#242951", "#2C315E"]}
-      style={styles.linearGradient}
-    >
-      <View style={styles.container}>
-        <View style={styles.questions}>
-          <Text style={styles.question}>This is a cool question ?</Text>
-        </View>
-        <View style={styles.answers}>
-          <TouchableOpacity style={styles.answer}>
-            <Text style={styles.answerText}>Answer 01</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.answer}>
-            <Text style={styles.answerText}>Answer 02</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.answer}>
-            <Text style={styles.answerText}>Answer 03</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.answer}>
-            <Text style={styles.answerText}>Answer 04</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.buttons}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>SKIP</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>NEXT</Text>
-          </TouchableOpacity>
-          {/* <TouchableOpacity>
-            <Text>END</Text>
-          </TouchableOpacity> */}
-        </View>
-      </View>
-    </LinearGradient>
+    <View style={styles.container}>
+      {questions && (
+        <LinearGradient
+          colors={["#242951", "#2C315E"]}
+          style={styles.linearGradient}
+        >
+          <View style={styles.parent}>
+            <View style={styles.questions}>
+              <Text style={styles.question}>Q.{questions[ques].question}</Text>
+            </View>
+            <View style={styles.answers}>
+              <TouchableOpacity style={styles.answer}>
+                <Text style={styles.answerText}>Answer 01</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.answer}>
+                <Text style={styles.answerText}>Answer 02</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.answer}>
+                <Text style={styles.answerText}>Answer 03</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.answer}>
+                <Text style={styles.answerText}>Answer 04</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.buttons}>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>SKIP</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>NEXT</Text>
+              </TouchableOpacity>
+              {/* <TouchableOpacity>
+                <Text>END</Text>
+              </TouchableOpacity> */}
+            </View>
+          </View>
+        </LinearGradient>
+      )}
+    </View>
   );
 };
 
@@ -46,18 +69,18 @@ export default Quiz;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30,
-    paddingHorizontal: 20,
     height: "100%",
+    width: "100%",
   },
   questions: {
+    paddingTop: 20,
     alignItems: "center",
     marginVertical: 30,
   },
   question: {
     color: "white",
-    fontSize: 26,
-    fontWeight: "350",
+    fontSize: 24,
+    fontFamily: "raleway",
   },
   answers: {
     marginVertical: 16,
@@ -73,8 +96,9 @@ const styles = StyleSheet.create({
   answerText: {
     color: "white",
     fontSize: 18,
-    fontWeight: "500",
-    paddingLeft: 20,
+    fontWeight: "600",
+    paddingLeft: 10,
+    fontFamily: "raleway",
   },
   buttons: {
     paddingVertical: 16,
@@ -87,7 +111,6 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     borderRadius: 16,
-    marginBottom: 20,
     marginTop: 40,
     alignItems: "center",
   },
@@ -101,5 +124,8 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 5,
+  },
+  parent: {
+    height: "100%",
   },
 });

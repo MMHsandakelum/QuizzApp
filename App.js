@@ -5,8 +5,15 @@ import MyStack from "./navigation";
 import Home from "./screens/home";
 import Quiz from "./screens/quiz";
 import Result from "./screens/result";
+import { useFonts } from "expo-font";
 
 export default function App() {
+  const [loaded] = useFonts({
+    raleway: require("./assets/fonts/Poppins-Medium.ttf"),
+  });
+  if (!loaded) {
+    return null;
+  }
   return (
     <NavigationContainer>
       <MyStack />
