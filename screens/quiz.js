@@ -11,7 +11,7 @@ import { LinearGradient } from "expo-linear-gradient";
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [array[i], (array[j] = array[j]), array[i]];
+    [array[i], array[j]] = [array[j], array[i]];
   }
 };
 
@@ -19,6 +19,7 @@ const Quiz = ({ navigation }) => {
   const [questions, setQuestions] = useState();
   const [ques, setQues] = useState(0);
   const [options, setOptions] = useState([]);
+  const [score, setScore] = useState(0);
   const getQuiz = async () => {
     const url =
       "https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple&encode=url3986";
@@ -43,6 +44,21 @@ const Quiz = ({ navigation }) => {
     return options;
   };
 
+  const handleSelectedOption = (_option) => {
+    if (_option === questions[ques].correct_answer) {
+      setScore(score + 10);
+    }
+    if (ques !== 9) {
+      setQues(ques + 1);
+      setOptions(generateOptionsAndShuffle(questions[ques + 1]));
+    }
+  };
+  const handleShowResult = () => {
+    navigation.navigate("Result", {
+      score: score,
+    });
+  };
+
   return (
     <View style={styles.container}>
       {questions && (
@@ -57,38 +73,55 @@ const Quiz = ({ navigation }) => {
               </Text>
             </View>
             <View style={styles.answers}>
-              <TouchableOpacity style={styles.answer}>
+              <TouchableOpacity
+                style={styles.answer}
+                onPress={() => handleSelectedOption(options[0])}
+              >
                 <Text style={styles.answerText}>
                   {decodeURIComponent(options[0])}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.answer}>
+              <TouchableOpacity
+                style={styles.answer}
+                onPress={() => handleSelectedOption(options[1])}
+              >
                 <Text style={styles.answerText}>
                   {decodeURIComponent(options[1])}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.answer}>
+              <TouchableOpacity
+                style={styles.answer}
+                onPress={() => handleSelectedOption(options[2])}
+              >
                 <Text style={styles.answerText}>
                   {decodeURIComponent(options[2])}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.answer}>
+              <TouchableOpacity
+                style={styles.answer}
+                onPress={() => handleSelectedOption(options[3])}
+              >
                 <Text style={styles.answerText}>
                   {decodeURIComponent(options[3])}
                 </Text>
               </TouchableOpacity>
             </View>
             <View style={styles.buttons}>
-              <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>SKIP</Text>
-              </TouchableOpacity>
+              {ques !== 9 && (
+                <TouchableOpacity style={styles.button}>
+                  <Text style={styles.buttonText}>PREW</Text>
+                </TouchableOpacity>
+              )}
               {ques !== 9 && (
                 <TouchableOpacity style={styles.button} onPress={handleNext}>
                   <Text style={styles.buttonText}>NEXT</Text>
                 </TouchableOpacity>
               )}
               {ques === 9 && (
-                <TouchableOpacity style={styles.button} onPress={() => null}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={handleShowResult}
+                >
                   <Text style={styles.buttonText}>SHOW RESULT</Text>
                 </TouchableOpacity>
               )}
