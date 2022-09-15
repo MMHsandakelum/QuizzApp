@@ -13,11 +13,11 @@ const Home = ({ navigation }) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
-        <Title />
+        <Title titleText="EasyQuiz.lk" />
         <View style={styles.bannerContainer}>
           <Image
             source={{
-              uri: "https://img.freepik.com/free-vector/flat-people-asking-questions-illustration_23-2148910626.jpg?w=740&t=st=1663047266~exp=1663047866~hmac=e94593cf15e68dd111ed06dca2c0a446a4fccbb28fab5db377bce82da0274cc6",
+              uri: "https://img.freepik.com/free-vector/flat-people-asking-questions-illustration_23-2148910627.jpg?w=740&t=st=1663257368~exp=1663257968~hmac=bc349d48c486932d30bd9f14203c35eb6a013dd170acb7cf10a52ec763ed4d33",
             }}
             style={styles.banner}
             resizeMode="contain"
