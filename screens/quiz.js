@@ -8,20 +8,41 @@ import {
 import React, { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], (array[j] = array[j]), array[i]];
+  }
+};
+
 const Quiz = ({ navigation }) => {
   const [questions, setQuestions] = useState();
   const [ques, setQues] = useState(0);
+  const [options, setOptions] = useState([]);
   const getQuiz = async () => {
     const url =
-      "https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple";
+      "https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple&encode=url3986";
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data.results[0]);
     setQuestions(data.results);
+    setOptions(generateOptionsAndShuffle(data.results[0]));
   };
   useEffect(() => {
     getQuiz();
   }, []);
+  const handleNext = () => {
+    setQues(ques + 1);
+    setOptions(generateOptionsAndShuffle(questions[ques + 1]));
+  };
+  const generateOptionsAndShuffle = (_question) => {
+    const options = [..._question.incorrect_answers];
+    options.push(_question.correct_answer);
+
+    shuffleArray(options);
+
+    return options;
+  };
+
   return (
     <View style={styles.container}>
       {questions && (
@@ -31,29 +52,47 @@ const Quiz = ({ navigation }) => {
         >
           <View style={styles.parent}>
             <View style={styles.questions}>
-              <Text style={styles.question}>Q.{questions[ques].question}</Text>
+              <Text style={styles.question}>
+                Q.{decodeURIComponent(questions[ques].question)}
+              </Text>
             </View>
             <View style={styles.answers}>
               <TouchableOpacity style={styles.answer}>
-                <Text style={styles.answerText}>Answer 01</Text>
+                <Text style={styles.answerText}>
+                  {decodeURIComponent(options[0])}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.answer}>
-                <Text style={styles.answerText}>Answer 02</Text>
+                <Text style={styles.answerText}>
+                  {decodeURIComponent(options[1])}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.answer}>
-                <Text style={styles.answerText}>Answer 03</Text>
+                <Text style={styles.answerText}>
+                  {decodeURIComponent(options[2])}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.answer}>
-                <Text style={styles.answerText}>Answer 04</Text>
+                <Text style={styles.answerText}>
+                  {decodeURIComponent(options[3])}
+                </Text>
               </TouchableOpacity>
             </View>
             <View style={styles.buttons}>
               <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>SKIP</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>NEXT</Text>
-              </TouchableOpacity>
+              {ques !== 9 && (
+                <TouchableOpacity style={styles.button} onPress={handleNext}>
+                  <Text style={styles.buttonText}>NEXT</Text>
+                </TouchableOpacity>
+              )}
+              {ques === 9 && (
+                <TouchableOpacity style={styles.button} onPress={() => null}>
+                  <Text style={styles.buttonText}>SHOW RESULT</Text>
+                </TouchableOpacity>
+              )}
+
               {/* <TouchableOpacity>
                 <Text>END</Text>
               </TouchableOpacity> */}
