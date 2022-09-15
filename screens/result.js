@@ -3,18 +3,22 @@ import React from "react";
 import Title from "../components/title";
 
 const Result = ({ navigation, route }) => {
-  const params = route.params;
-  console.log(params);
+  const { score } = route.params;
+  const resultBanner =
+    score > 30
+      ? "https://img.freepik.com/free-vector/people-celebrating-goal-achievement-holding-trophy_23-2148825609.jpg?w=740&t=st=1663261186~exp=1663261786~hmac=c70d518f8eaec861a4c38b570296b3a484f0abd39f35a5d4e2e6a5c504ddad5f"
+      : "https://img.freepik.com/free-vector/loser-failure-success-winning-businessmen-composition-with-discouraged-man-broken-egg-shellvector-illustration_1284-63222.jpg?w=740&t=st=1663261258~exp=1663261858~hmac=9c7fe4755fdb390003730242ac6bb1844a04e3b3b9bea064a70b69ef1bfca679";
   const handleGoHome = () => {
     navigation.navigate("Home");
   };
   return (
     <View style={styles.container}>
       <Title titleText="RESULTS" />
+      <Text style={styles.scoreText}>{score}</Text>
       <View style={styles.bannerCon}>
         <Image
           source={{
-            uri: "https://img.freepik.com/free-vector/yes-no-concept-illustration_114360-7564.jpg?w=740&t=st=1663257554~exp=1663258154~hmac=e13ca71798e2f48e62b15fd0a5c44963414a053ff06dde5e06a62f7a60dd2821",
+            uri: resultBanner,
           }}
           resizeMode="contain"
           style={styles.banner}
@@ -59,5 +63,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontWeight: "600",
+  },
+  scoreText: {
+    fontSize: 36,
   },
 });
